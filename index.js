@@ -14,12 +14,11 @@ export function findHighestFreq(inputArr) {
   /*<YOUR CODE HERE>*/
     let tracker = {};
 
-    inputArr.forEach(element => {
+    inputArr.forEach((element, index) => {
         if ( tracker.hasOwnProperty(element) ) {
-            tracker[element]++;
-            // tracker.index = index;
+            tracker[element].count++;
         } else {
-            tracker[element] = 1;
+            tracker[element] = { index: index, count: 1 };
         }
     });
 
@@ -29,27 +28,23 @@ export function findHighestFreq(inputArr) {
     let recordElement = null;
     let instances = 0;
 
+    // console.log( JSON.stringify(tracker) );
+
     for (let element in tracker) {
         // console.log(`Testing: ${tracker[element]} against record: ${record}`);
 
-        if (tracker[element] > record) {
-            recordElement = element;
-            record = tracker[element];
+        if (tracker[element].count > record) {
+            recordElement = tracker[element].index;
+            record = tracker[element].count;
             instances = 1;
-        } else if (tracker[element] === record) {
+        } else if (tracker[element].count === record) {
             instances++;
         }
     }
 
-    if ( instances > 1 ) {
-        return null;
-    } else {
-        if (isNaN(recordElement)) {
-            return recordElement;
-        } else {
-            return Number(recordElement);
-        }
-    }
+    let result = (instances > 1 ? null : inputArr[recordElement]);
+
+    return result;
 }
 
 
